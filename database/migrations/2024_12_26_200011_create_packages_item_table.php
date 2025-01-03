@@ -11,18 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('packages', function (Blueprint $table) {
+        Schema::create('packages_item', function (Blueprint $table) {
             $table->id();
+            $table->string('chave_nfe');
             $table->char('status', length: 100);
-            $table->string('notes')->nullable();
 
-            $table->unsignedBigInteger('carrier_id');
+            $table->unsignedBigInteger('packages_id');
             $table->unsignedBigInteger('user_id');
 
-            $table->foreign('carrier_id')->references('id')->on('carriers');
+            $table->foreign('packages_id')->references('id')->on('packages');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
-
         });
     }
 
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('packages');
+        Schema::dropIfExists('packages_item');
     }
 };

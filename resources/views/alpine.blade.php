@@ -14,20 +14,39 @@
 <body class="h-screen">
     <div class="flex items-center justify-center h-full min-h-screen">
 
-        <div x-data>
-            <span x-text="$store.counter.count"></span>
-            <button @click="$store.counter.count++">Increment</button>
-            <button @click="$store.counter.count--">Decrement</button>
-        </div>
+        <div class="flex items-center justify-center h-full min-h-screen bg-slate-400">
 
-        <div x-data></div>
+            <div x-data="{
+                names:['Alexandre', 'João', 'Maria'],
+                name: '',
+                add(){
+                    this.names.push(this.name);
+                    this.name='';
+                },
+                remove(name){
+                    //Exemple One
+                    //this.names.splice(this.names.indexOf(name),1);
 
-    </div>
+                    //Exemple TWO
+                    let index = this.names.findIndex(item => item ==name);
+                    this.names.splice(index,1);
 
-    <script>
-        document.addEventListener('alpine:init', () => {
-            Alpine.store('counter', {count:0})
-        })
-    </script>
+                }
+            }">
+
+            <input type="text" x-model="name" x-on:keydown.enter="add"> <button @click="add">Adicionar</button>
+
+
+            <ul>
+                <template x-for="name in names" x-bind:key="name">
+                    <div>
+                        <li x-text="name"></li> <button @click="remove(name)">Remover</button>
+                    </div>
+
+                </template>
+            </ul>
+
+            </div>
+
 </body>
 </html>

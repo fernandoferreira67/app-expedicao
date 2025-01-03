@@ -2,69 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Carriers;
+use App\Models\Carrier;
+use App\Models\Package;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 
 class CarriersController extends Controller
 {
-    private $carriers;
+    private $carrier;
 
-    public function __construct(Carriers $carriers)
+    public function __construct(Carrier $carrier)
     {
-        $this->carriers = $carriers;
+        $this->carrier = $carrier;
     }
 
     public function index()
     {
-        $collection = $this->carriers->orderBy('name','ASC')->paginate(10);
+        $collection = $this->carrier->orderBy('name','ASC')->paginate(10);
         return view ('logistics.carriers.index', compact('collection'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+      return view('logistics.carriers.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
-        //
+      request()->validate([
+        'name' => 'required',
+      ]);
+
+      $data = $request->all();
+      $this->carrier::create($data);
+
+      return redirect()->route('carriers.index')->with('success', 'Cadastro realizado com Sucesso!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Carriers $carriers)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Carriers $carriers)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Carriers $carriers)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Carriers $carriers)
-    {
-        //
-    }
 }
